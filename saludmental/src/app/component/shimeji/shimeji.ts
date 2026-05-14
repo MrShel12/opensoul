@@ -12,7 +12,7 @@ export class Shimeji implements OnInit, OnDestroy {
   visible = true;
   talking = true;
   message = 'Estoy aqui contigo.';
-  image = '/pet-idle.jpeg';
+  image = '/pet-idle.png';
   x = 40;
   y = 40;
   facingRight = true;
@@ -37,6 +37,7 @@ export class Shimeji implements OnInit, OnDestroy {
   private velocityY = 26;
   private readonly shimejiWidth = 110;
   private readonly shimejiHeight = 150;
+  private frameIndex = 0;
 
   ngOnInit(){
     this.resetPosition();
@@ -47,7 +48,12 @@ export class Shimeji implements OnInit, OnDestroy {
     }, 8000);
 
     this.walkTimer = window.setInterval(() => {
-      this.image = this.image === '/pet-idle.jpeg' ? '/pet-happy.jpeg' : '/pet-idle.jpeg';
+      const frames = this.walking
+        ? ['/pet-run1.png', '/pet-run2.png']
+        : ['/pet-idle.png', '/pet-happy.png'];
+
+      this.frameIndex = (this.frameIndex + 1) % frames.length;
+      this.image = frames[this.frameIndex];
     }, 650);
   }
 

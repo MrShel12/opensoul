@@ -14,7 +14,7 @@ export class Pet implements OnDestroy {
   energy = 80;
 
   message = 'Hola, estoy lista para acompanarte.';
-  currentImage = '/pet-idle.jpeg';
+  currentImage = '/pet-idle.png';
   animationClass = 'idle';
 
   private animationTimeout?: number;
@@ -24,20 +24,20 @@ export class Pet implements OnDestroy {
     this.hunger = this.increaseStat(this.hunger);
     this.energy = this.decreaseStat(this.energy, 5);
     this.message = 'Gracias por alimentarme.';
-    this.setPetState(['/pet-happy.jpeg', '/pet-playful.jpeg'], 'is-feeding');
+    this.setPetState(['/pet-eat1.png', '/pet-eat2.png'], 'is-feeding');
   }
 
   petPet(){
     this.happiness = this.increaseStat(this.happiness);
     this.message = 'Eso me hace feliz.';
-    this.setPetState('/pet-playful.jpeg', 'is-playing');
+    this.setPetState('/pet-happy.png', 'is-playing');
   }
 
   sleepPet(){
     this.energy = this.increaseStat(this.energy);
     this.hunger = this.decreaseStat(this.hunger, 5);
     this.message = 'Que buena siesta.';
-    this.setPetState(['/pet-sleepy.jpeg', '/pet-idle.jpeg'], 'is-sleeping');
+    this.setPetState(['/pet-sleepy1.png', '/pet-sleepy2.png'], 'is-sleeping');
   }
 
   ngOnDestroy(){
@@ -62,7 +62,7 @@ export class Pet implements OnDestroy {
     }
 
     this.animationTimeout = window.setTimeout(() => {
-      this.currentImage = '/pet-idle.jpeg';
+      this.currentImage = '/pet-idle.png';
       this.animationClass = 'idle';
       this.clearAnimationTimers();
     }, 1400);
