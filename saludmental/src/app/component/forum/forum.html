@@ -1,0 +1,26 @@
+<section class="forum-page">
+
+  <div class="forum-header">
+    <h2>Foro</h2>
+    <p>Comparte como te sientes o deja un mensaje bonito para alguien mas, creeme que te lo agradeceran.</p>
+  </div>
+
+  <form class="post-form" (ngSubmit)="publishPost()">
+    <textarea
+      name="newPost"
+      [(ngModel)]="newPost"
+      placeholder="Escribe tu mensaje..."
+      rows="4"
+    ></textarea>
+
+    <button type="submit">Publicar</button>
+  </form>
+
+  <div class="posts">
+    <article class="post" *ngFor="let post of posts">
+      <strong>{{ post.username }}</strong>
+      <p>{{ post.message }}</p>
+    </article>
+  </div>
+
+</section>

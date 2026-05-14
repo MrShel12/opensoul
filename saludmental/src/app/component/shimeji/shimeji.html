@@ -1,0 +1,21 @@
+<div
+  class="shimeji"
+  [class.is-hidden]="!visible"
+  [class.is-facing-left]="!facingRight"
+  [style.left.px]="x"
+  [style.top.px]="y"
+>
+
+  <button class="shimeji-toggle" type="button" (click)="toggle()">
+    {{ visible ? 'x' : 'Miku' }}
+  </button>
+
+  <div class="speech-bubble" [class.is-quiet]="!talking">
+    {{ message }}
+  </div>
+
+  <button class="shimeji-body" type="button" (click)="sayRandomMessage()">
+    <img [src]="image" alt="Shimeji estilo Miku">
+  </button>
+
+</div>

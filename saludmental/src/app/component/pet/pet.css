@@ -1,0 +1,125 @@
+.pet-card{
+
+  width:min(360px, 100%);
+
+  background:white;
+
+  padding:2rem;
+
+  border-radius:25px;
+
+  text-align:center;
+
+  box-shadow:0 5px 20px rgba(0,0,0,.1);
+
+}
+
+.pet-image{
+
+  width:220px;
+  aspect-ratio:1;
+  object-fit:contain;
+
+  border-radius:22px;
+  background:#020617;
+  transition:transform .25s ease, filter .25s ease;
+  animation:float 3s ease-in-out infinite;
+
+}
+
+.pet-image.is-feeding{
+  animation:jump .45s ease-in-out 3;
+  filter:saturate(1.2);
+}
+
+.pet-image.is-playing{
+  animation:dance .5s ease-in-out 3;
+  filter:saturate(1.3);
+}
+
+.pet-image.is-sleeping{
+  animation:sleepy 1.4s ease-in-out;
+  filter:brightness(.9) saturate(.85);
+}
+
+.message{
+  color:#666;
+  margin-bottom:1rem;
+}
+
+.stats{
+  margin-bottom:1rem;
+}
+
+.buttons{
+
+  display:flex;
+  gap:1rem;
+
+  justify-content:center;
+
+  flex-wrap:wrap;
+
+}
+
+button{
+
+  border:none;
+
+  background:#8cacbe;
+
+  color:white;
+
+  padding:.8rem 1rem;
+
+  border-radius:12px;
+
+  cursor:pointer;
+
+}
+
+button:hover{
+  background:#4f46e5;
+}
+
+@keyframes float{
+  0%, 100%{
+    transform:translateY(0);
+  }
+  50%{
+    transform:translateY(-8px);
+  }
+}
+
+@keyframes jump{
+  0%, 100%{
+    transform:translateY(0) scale(1);
+  }
+  50%{
+    transform:translateY(-18px) scale(1.04);
+  }
+}
+
+@keyframes dance{
+  0%, 100%{
+    transform:rotate(0deg) scale(1);
+  }
+  25%{
+    transform:rotate(-5deg) scale(1.03);
+  }
+  75%{
+    transform:rotate(5deg) scale(1.03);
+  }
+}
+
+@keyframes sleepy{
+  0%{
+    transform:translateY(0) rotate(0deg);
+  }
+  50%{
+    transform:translateY(10px) rotate(-2deg);
+  }
+  100%{
+    transform:translateY(0) rotate(0deg);
+  }
+}

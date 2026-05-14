@@ -1,0 +1,128 @@
+.hero{
+  min-height:90vh;
+
+  display:flex;
+  flex-direction:column;
+
+  justify-content:center;
+  align-items:center;
+
+  text-align:center;
+
+  padding:2rem;
+  background:
+    radial-gradient(circle at top left, rgba(20,184,166,.16), transparent 32%),
+    radial-gradient(circle at bottom right, rgba(99,102,241,.18), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #f7f7ff 100%);
+}
+
+.welcome-pill{
+  margin-bottom:1rem;
+  padding:.55rem 1rem;
+  border:1px solid rgba(99,102,241,.22);
+  border-radius:999px;
+  background:rgba(255,255,255,.78);
+  color:#4f46e5;
+  font-weight:bold;
+  box-shadow:0 8px 24px rgba(79,70,229,.08);
+}
+
+.hero h1{
+  margin:0;
+  font-size:4rem;
+  color:#4f46e5;
+}
+
+.hero p{
+  max-width:700px;
+  color:#555;
+  font-size:1.2rem;
+}
+
+.buttons{
+  margin-top:2rem;
+
+  display:flex;
+  gap:1rem;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+.home-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:1rem 2rem;
+
+  border:none;
+  border-radius:14px;
+
+  background:#6366f1;
+  color:white;
+  text-decoration:none;
+
+  cursor:pointer;
+
+  font-size:1rem;
+  font-weight:bold;
+  box-shadow:0 10px 22px rgba(79,70,229,.2);
+  transition:transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+
+.home-button:hover{
+  background:#4f46e5;
+  transform:translateY(-2px);
+  box-shadow:0 14px 26px rgba(79,70,229,.24);
+}
+
+.home-button.secondary{
+  background:#14b8a6;
+}
+
+.home-button.secondary:hover{
+  background:#0f766e;
+}
+
+.home-button.chat{
+  background:#f97316;
+}
+
+.home-button.chat:hover{
+  background:#ea580c;
+}
+
+.home-button.help{
+  background:#ec4899;
+}
+
+.home-button.help:hover{
+  background:#db2777;
+}
+
+.home-highlights{
+  margin-top:2.5rem;
+  display:flex;
+  gap:.75rem;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+.home-highlights span{
+  padding:.7rem 1rem;
+  border-radius:12px;
+  background:white;
+  color:#555;
+  box-shadow:0 8px 20px rgba(15,23,42,.08);
+}
+
+@media (max-width:600px){
+  .hero h1{
+    font-size:2.6rem;
+  }
+
+  .home-button{
+    width:100%;
+    max-width:280px;
+  }
+}

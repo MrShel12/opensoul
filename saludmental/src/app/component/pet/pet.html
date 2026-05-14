@@ -1,0 +1,41 @@
+<div class="pet-card">
+
+  <img
+    [src]="currentImage"
+    class="pet-image {{ animationClass }}"
+    alt="Quieres distraerte?"
+  >
+
+  <h2>
+    Tu compañera virtual
+  </h2>
+
+  <p class="message">
+    {{ message }}
+  </p>
+
+  <div class="stats">
+
+    <p>Tengo hambre?: {{ hunger }}</p>
+    <p>oyee, estoy aburrida: {{ happiness }}</p>
+    <p>Energia: {{ energy }}</p>
+
+  </div>
+
+  <div class="buttons">
+
+    <button (click)="feedPet()">
+      Darle de comer
+    </button>
+
+    <button (click)="petPet()">
+      Jugar un rato
+    </button>
+
+    <button (click)="sleepPet()">
+      Dormir
+    </button>
+
+  </div>
+
+</div>
