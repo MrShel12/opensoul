@@ -1,1 +1,67 @@
-<p>admin-page works!</p>
+<div class="admin-container">
+
+  <div
+    class="login-box"
+    *ngIf="!logged"
+  >
+
+    <h1>
+      Panel administrador 🔒
+    </h1>
+
+    <input
+      type="text"
+      placeholder="Usuario"
+      [(ngModel)]="username"
+    >
+
+    <input
+      type="password"
+      placeholder="Contraseña"
+      [(ngModel)]="password"
+    >
+
+    <button (click)="login()">
+      Entrar
+    </button>
+
+  </div>
+
+  <div
+    class="dashboard"
+    *ngIf="logged"
+  >
+
+    <h1>
+      Reportes detectados 🚨
+    </h1>
+
+    <div
+      class="report-card"
+      *ngFor="let report of reports"
+    >
+
+      <h3>
+        {{ report.user }}
+      </h3>
+
+      <p>
+        Sala:
+        {{ report.room }}
+      </p>
+
+      <p>
+        "{{ report.message }}"
+      </p>
+
+      <span class="danger">
+
+        {{ report.danger }}
+
+      </span>
+
+    </div>
+
+  </div>
+
+</div>

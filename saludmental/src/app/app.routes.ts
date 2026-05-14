@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { Home } from './pages/home/home';
 import { PetPage } from './pages/pet-page/pet-page';
 import { ChatPage } from './pages/chat-page/chat-page';
+import { AdminPage } from './pages/admin-page/admin-page';
 import { Forum } from './component/forum/forum';
 
 export const routes: Routes = [
@@ -24,6 +25,11 @@ export const routes: Routes = [
   {
     path:'chat',
     component: ChatPage
+  },
+
+  {
+    path:'admin',
+    component: AdminPage
   }
 
 ]; 

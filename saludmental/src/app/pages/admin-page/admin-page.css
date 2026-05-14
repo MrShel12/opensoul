@@ -1,0 +1,82 @@
+.admin-container{
+
+  min-height:100vh;
+
+  display:flex;
+
+  justify-content:center;
+
+  align-items:center;
+
+  padding:2rem;
+
+}
+
+.login-box,
+.dashboard{
+
+  width:100%;
+
+  max-width:700px;
+
+  background:white;
+
+  padding:2rem;
+
+  border-radius:25px;
+
+  box-shadow:0 5px 20px rgba(0,0,0,.1);
+
+}
+
+input{
+
+  width:100%;
+
+  padding:1rem;
+
+  margin-bottom:1rem;
+
+  border-radius:12px;
+
+  border:1px solid #ddd;
+
+}
+
+button{
+
+  width:100%;
+
+  padding:1rem;
+
+  border:none;
+
+  background:#6366f1;
+
+  color:white;
+
+  border-radius:12px;
+
+  cursor:pointer;
+
+}
+
+.report-card{
+
+  background:#fef2f2;
+
+  padding:1rem;
+
+  border-radius:15px;
+
+  margin-top:1rem;
+
+}
+
+.danger{
+
+  color:red;
+
+  font-weight:bold;
+
+}
