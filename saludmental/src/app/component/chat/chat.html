@@ -1,1 +1,84 @@
-<p>chat works!</p>
+<div class="chat-container">
+
+  <div
+    class="join-screen"
+    *ngIf="!joined"
+  >
+
+    <h1>
+      Chat de apoyo 💙
+    </h1>
+
+    <input
+      type="text"
+      placeholder="Username"
+      [(ngModel)]="username"
+    >
+
+    <h3>
+      Selecciona cómo te sientes:
+    </h3>
+
+    <div class="rooms">
+
+      <button
+        *ngFor="let room of rooms"
+        (click)="joinRoom(room)"
+      >
+
+        {{ room }}
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <div
+    class="chat-room"
+    *ngIf="joined"
+  >
+
+    <div class="chat-header">
+
+      Sala:
+      {{ currentRoom }}
+
+    </div>
+
+    <div class="messages">
+
+      <div
+        class="message"
+        *ngFor="let msg of messages"
+      >
+
+        <strong>
+          {{ msg.username }}
+        </strong>
+
+        <p>
+          {{ msg.text }}
+        </p>
+
+      </div>
+
+    </div>
+
+    <div class="send-box">
+
+      <input
+        type="text"
+        placeholder="Escribe un mensaje..."
+        [(ngModel)]="message"
+      >
+
+      <button (click)="sendMessage()">
+        Enviar
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,141 @@
+.chat-container{
+
+  max-width:900px;
+
+  margin:auto;
+
+  padding:2rem;
+
+}
+
+.join-screen{
+
+  background:white;
+
+  padding:2rem;
+
+  border-radius:25px;
+
+  text-align:center;
+
+  box-shadow:0 5px 20px rgba(0,0,0,.1);
+
+}
+
+.rooms{
+
+  display:flex;
+
+  gap:1rem;
+
+  flex-wrap:wrap;
+
+  justify-content:center;
+
+  margin-top:1rem;
+
+}
+
+.rooms button{
+
+  background:#6366f1;
+
+  color:white;
+
+  border:none;
+
+  padding:1rem;
+
+  border-radius:15px;
+
+  cursor:pointer;
+
+}
+
+.chat-room{
+
+  background:white;
+
+  border-radius:25px;
+
+  overflow:hidden;
+
+  box-shadow:0 5px 20px rgba(0,0,0,.1);
+
+}
+
+.chat-header{
+
+  background:#6366f1;
+
+  color:white;
+
+  padding:1rem;
+
+  font-weight:bold;
+
+}
+
+.messages{
+
+  height:400px;
+
+  overflow-y:auto;
+
+  padding:1rem;
+
+}
+
+.message{
+
+  background:#eef2ff;
+
+  padding:1rem;
+
+  border-radius:15px;
+
+  margin-bottom:1rem;
+
+}
+
+.send-box{
+
+  display:flex;
+
+  padding:1rem;
+
+  gap:1rem;
+
+}
+
+.send-box input{
+
+  flex:1;
+
+}
+
+input{
+
+  padding:1rem;
+
+  border-radius:12px;
+
+  border:1px solid #ddd;
+
+}
+
+.send-box button{
+
+  border:none;
+
+  background:#6366f1;
+
+  color:white;
+
+  padding:1rem 1.5rem;
+
+  border-radius:12px;
+
+  cursor:pointer;
+
+}
