@@ -1,4 +1,4 @@
-import { Component, OnDestroy, inject } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 
@@ -27,8 +27,6 @@ import { Subscription } from 'rxjs';
 })
 export class AdminPage implements OnDestroy {
 
-  private firestore = inject(Firestore);
-
   private reportsSubscription?: Subscription;
 
   username = '';
@@ -38,6 +36,8 @@ export class AdminPage implements OnDestroy {
   logged = false;
 
   reports:any[] = [];
+
+  constructor(private firestore: Firestore){}
 
   login(){
 

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, inject } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 
@@ -26,8 +26,6 @@ import { Subscription } from 'rxjs';
   styleUrl: './chat.css'
 })
 export class Chat implements OnDestroy {
-
-  private firestore = inject(Firestore);
 
   private messagesSubscription?: Subscription;
   private roomStatusSubscription?: Subscription;
@@ -57,6 +55,8 @@ export class Chat implements OnDestroy {
   ];
 
   messages:any[] = [];
+
+  constructor(private firestore: Firestore){}
 
   private dangerousWords = [
 
@@ -92,6 +92,10 @@ export class Chat implements OnDestroy {
   async sendMessage(){
 
     if(this.userBanned || this.roomStopped){
+      console.warn('Mensaje bloqueado por moderacion.', {
+        userBanned:this.userBanned,
+        roomStopped:this.roomStopped
+      });
       return;
     }
 
@@ -101,38 +105,47 @@ export class Chat implements OnDestroy {
       const text = this.message.trim();
       const danger = this.detectDanger(text);
 
-      await addDoc(
-        collection(this.firestore, `chatRooms/${this.currentRoom}/messages`),
-        {
+      console.log('enviando...');
+      console.log('currentRoom:', this.currentRoom);
+      console.log('mensaje:', text);
 
-          username,
-          text,
-          room:this.currentRoom,
-          flagged:danger !== '',
-          createdAt:serverTimestamp()
-
-        }
-      );
-
-      if(danger !== ''){
-
+      try{
         await addDoc(
-          collection(this.firestore, 'moderationReports'),
+          collection(this.firestore, `chatRooms/${this.currentRoom}/messages`),
           {
 
-            user:username,
+            username,
+            text,
             room:this.currentRoom,
-            message:text,
-            danger,
-            status:'pending',
+            flagged:danger !== '',
             createdAt:serverTimestamp()
 
           }
         );
 
-      }
+        if(danger !== ''){
 
-      this.message = '';
+          await addDoc(
+            collection(this.firestore, 'moderationReports'),
+            {
+
+              user:username,
+              room:this.currentRoom,
+              message:text,
+              danger,
+              status:'pending',
+              createdAt:serverTimestamp()
+
+            }
+          );
+
+        }
+
+        this.message = '';
+      }
+      catch(error){
+        console.error('Error enviando mensaje a Firestore:', error);
+      }
 
     }
 
