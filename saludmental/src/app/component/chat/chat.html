@@ -67,13 +67,24 @@
 
     <div class="send-box">
 
+      <p
+        class="blocked-message"
+        *ngIf="blockedMessage"
+      >
+        {{ blockedMessage }}
+      </p>
+
       <input
         type="text"
         placeholder="Escribe un mensaje..."
         [(ngModel)]="message"
+        [disabled]="userBanned || roomStopped"
       >
 
-      <button (click)="sendMessage()">
+      <button
+        (click)="sendMessage()"
+        [disabled]="userBanned || roomStopped"
+      >
         Enviar
       </button>
 

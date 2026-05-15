@@ -60,6 +60,27 @@
 
       </span>
 
+      <p>
+        Estado:
+        {{ report.status }}
+      </p>
+
+      <div class="report-actions">
+
+        <button (click)="markReviewed(report)">
+          Revisado
+        </button>
+
+        <button (click)="banUser(report)">
+          Banear usuario
+        </button>
+
+        <button (click)="stopConversation(report)">
+          Detener conversacion
+        </button>
+
+      </div>
+
     </div>
 
   </div>

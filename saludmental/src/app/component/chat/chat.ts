@@ -1,8 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 
 import { FormsModule } from '@angular/forms';
+
+import {
+  Firestore,
+  addDoc,
+  collection,
+  collectionData,
+  doc,
+  docData,
+  orderBy,
+  query,
+  serverTimestamp
+} from '@angular/fire/firestore';
+
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-chat',
@@ -11,7 +25,13 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './chat.html',
   styleUrl: './chat.css'
 })
-export class Chat {
+export class Chat implements OnDestroy {
+
+  private firestore = inject(Firestore);
+
+  private messagesSubscription?: Subscription;
+  private roomStatusSubscription?: Subscription;
+  private banSubscription?: Subscription;
 
   username = '';
 
@@ -20,6 +40,12 @@ export class Chat {
   message = '';
 
   joined = false;
+
+  userBanned = false;
+
+  roomStopped = false;
+
+  blockedMessage = '';
 
   rooms = [
 
@@ -32,30 +58,147 @@ export class Chat {
 
   messages:any[] = [];
 
+  private dangerousWords = [
+
+    'idiota',
+    'tonto',
+    'estupido',
+    'estupida',
+    'odio',
+    'muerete',
+    'matate',
+    'suicidate',
+    'hazte dano',
+    'hazte daño',
+    'nadie te quiere',
+    'no vales',
+    'lastimate',
+    'lastimarte'
+
+  ];
+
   joinRoom(room:string){
 
     this.currentRoom = room;
 
     this.joined = true;
 
+    this.listenToRoomMessages();
+
+    this.listenToModerationStatus();
+
   }
 
-  sendMessage(){
+  async sendMessage(){
+
+    if(this.userBanned || this.roomStopped){
+      return;
+    }
 
     if(this.message.trim() !== ''){
 
-      this.messages.push({
+      const username = this.username.trim() || 'Usuario anonimo';
+      const text = this.message.trim();
+      const danger = this.detectDanger(text);
 
-        username:this.username,
-        text:this.message,
-        room:this.currentRoom
+      await addDoc(
+        collection(this.firestore, `chatRooms/${this.currentRoom}/messages`),
+        {
 
-      });
+          username,
+          text,
+          room:this.currentRoom,
+          flagged:danger !== '',
+          createdAt:serverTimestamp()
+
+        }
+      );
+
+      if(danger !== ''){
+
+        await addDoc(
+          collection(this.firestore, 'moderationReports'),
+          {
+
+            user:username,
+            room:this.currentRoom,
+            message:text,
+            danger,
+            status:'pending',
+            createdAt:serverTimestamp()
+
+          }
+        );
+
+      }
 
       this.message = '';
 
     }
 
+  }
+
+  ngOnDestroy(){
+    this.messagesSubscription?.unsubscribe();
+    this.roomStatusSubscription?.unsubscribe();
+    this.banSubscription?.unsubscribe();
+  }
+
+  private listenToRoomMessages(){
+    this.messagesSubscription?.unsubscribe();
+
+    const messagesQuery = query(
+      collection(this.firestore, `chatRooms/${this.currentRoom}/messages`),
+      orderBy('createdAt', 'asc')
+    );
+
+    this.messagesSubscription = collectionData(messagesQuery, { idField:'id' })
+      .subscribe((messages) => {
+        this.messages = messages;
+      });
+  }
+
+  private detectDanger(text:string){
+    const normalizedText = text.toLowerCase();
+
+    const detectedWord = this.dangerousWords.find((word) => {
+      return normalizedText.includes(word);
+    });
+
+    return detectedWord ? 'Mensaje de riesgo: ' + detectedWord : '';
+  }
+
+  private listenToModerationStatus(){
+    this.roomStatusSubscription?.unsubscribe();
+    this.banSubscription?.unsubscribe();
+
+    const username = this.username.trim() || 'Usuario anonimo';
+
+    this.roomStatusSubscription = docData(doc(this.firestore, `stoppedRooms/${this.currentRoom}`))
+      .subscribe((room:any) => {
+        this.roomStopped = room?.stopped === true;
+        this.updateBlockedMessage();
+      });
+
+    this.banSubscription = docData(doc(this.firestore, `bannedUsers/${encodeURIComponent(username)}`))
+      .subscribe((user:any) => {
+        this.userBanned = user?.banned === true;
+        this.updateBlockedMessage();
+      });
+  }
+
+  private updateBlockedMessage(){
+    if(this.userBanned){
+      this.blockedMessage = 'Tu usuario fue bloqueado por un administrador.';
+      return;
+    }
+
+    if(this.roomStopped){
+      this.blockedMessage = 'Esta sala fue detenida por un administrador.';
+      return;
+    }
+
+    this.blockedMessage = '';
   }
 
 }

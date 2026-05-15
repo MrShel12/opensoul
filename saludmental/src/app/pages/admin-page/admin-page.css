@@ -80,3 +80,13 @@ button{
   font-weight:bold;
 
 }
+
+.report-actions{
+
+  display:grid;
+
+  gap:.6rem;
+
+  margin-top:1rem;
+
+}

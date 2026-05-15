@@ -1,8 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 
 import { CommonModule } from '@angular/common';
 
 import { FormsModule } from '@angular/forms';
+
+import {
+  Firestore,
+  collection,
+  collectionData,
+  doc,
+  orderBy,
+  query,
+  serverTimestamp,
+  setDoc,
+  updateDoc
+} from '@angular/fire/firestore';
+
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-admin-page',
@@ -11,7 +25,11 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './admin-page.html',
   styleUrl: './admin-page.css'
 })
-export class AdminPage {
+export class AdminPage implements OnDestroy {
+
+  private firestore = inject(Firestore);
+
+  private reportsSubscription?: Subscription;
 
   username = '';
 
@@ -19,23 +37,7 @@ export class AdminPage {
 
   logged = false;
 
-  reports = [
-
-    {
-      user:'Carlos',
-      room:'Ansiedad',
-      message:'Nadie te quiere',
-      danger:'Bullying'
-    },
-
-    {
-      user:'Ana',
-      room:'Soledad',
-      message:'Hazte daño',
-      danger:'Riesgo'
-    }
-
-  ];
+  reports:any[] = [];
 
   login(){
 
@@ -47,8 +49,77 @@ export class AdminPage {
 
       this.logged = true;
 
+      this.listenToReports();
+
     }
 
+  }
+
+  async markReviewed(report:any){
+    await this.updateReport(report, {
+      status:'reviewed'
+    });
+  }
+
+  async banUser(report:any){
+    await setDoc(
+      doc(this.firestore, `bannedUsers/${encodeURIComponent(report.user)}`),
+      {
+        user:report.user,
+        room:report.room,
+        banned:true,
+        createdAt:serverTimestamp()
+      }
+    );
+
+    await this.updateReport(report, {
+      status:'banned',
+      banned:true
+    });
+  }
+
+  async stopConversation(report:any){
+    await setDoc(
+      doc(this.firestore, `stoppedRooms/${report.room}`),
+      {
+        room:report.room,
+        stopped:true,
+        createdAt:serverTimestamp()
+      }
+    );
+
+    await this.updateReport(report, {
+      status:'stopped',
+      stopped:true
+    });
+  }
+
+  ngOnDestroy(){
+    this.reportsSubscription?.unsubscribe();
+  }
+
+  private listenToReports(){
+    this.reportsSubscription?.unsubscribe();
+
+    const reportsQuery = query(
+      collection(this.firestore, 'moderationReports'),
+      orderBy('createdAt', 'desc')
+    );
+
+    this.reportsSubscription = collectionData(reportsQuery, { idField:'id' })
+      .subscribe((reports) => {
+        this.reports = reports;
+      });
+  }
+
+  private async updateReport(report:any, changes:any){
+    await updateDoc(
+      doc(this.firestore, `moderationReports/${report.id}`),
+      {
+        ...changes,
+        reviewedAt:serverTimestamp()
+      }
+    );
   }
 
 }
