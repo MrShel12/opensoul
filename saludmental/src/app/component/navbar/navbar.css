@@ -61,6 +61,26 @@
   transform:translateY(-1px);
 }
 
+.admin-btn{
+
+  position:fixed;
+
+  top:20px;
+
+  right:20px;
+
+  background:#ffffff22;
+
+  padding:10px;
+
+  border-radius:50%;
+
+  text-decoration:none;
+
+  font-size:22px;
+
+}
+
 @media (max-width:650px){
   .navbar{
     flex-direction:column;
